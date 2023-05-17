@@ -20,7 +20,7 @@ def find_path(str_input)->Path:
 
 def get_epub_file(str_input) ->list:
 
-    path = find_path(str_input).glob('*.pdf')
+    path = find_path(str_input).glob('*.epub')
     today = today_date()
     result = []
 
@@ -33,15 +33,15 @@ def get_epub_file(str_input) ->list:
         if date[:10] == today :
             result.append(file)
 
-    return result
+    return result if result else 0
     
     # else:
     #     # return de la forme : ["path/to/file0", "path/to/file1", "path/to/file2"]
     #     return "pas de fichier aujourd'hui"
 
 
-def move_file(str_input):
-    file_list = get_epub_file(str_input)
+def move_file(file_list):
+
     files = [file for file in file_list]
     print(files)
 
@@ -53,9 +53,27 @@ def move_file(str_input):
         print('done')
 
 
-# str_input = str(input('Path : ["telegram" ou "telechargement]: '))
-# # files = get_epub_file(str_input)
-# # print(files)
+def check_file_size(files):
+    total_size_mb = 0
+    for file in files:
+        size_mb = file.stat().st_size / (1024 ** 2)
+        print(f"{file}: {size_mb:.2f} MB")
+        total_size_mb += size_mb
+        
+        
+        if size_mb > 25:
+            files.remove(file)
+        
+        if total_size_mb > 25: 
+            pass
 
-# # # today_date()
-# move_file(str_input)
+
+if __name__ == "__main__":
+    # str_input = str(input('Path : ["telegram" ou "telechargement]: '))
+    # files = get_epub_file(str_input)
+    # # # print(files)
+
+    # # # # today_date()
+    # # move_file(str_input)
+    # check_file_size(files)
+    pass
