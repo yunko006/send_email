@@ -1,9 +1,10 @@
 import os
-from dotenv import load_dotenv
-import yagmail
-
-# from yagmail.error import SMTPSenderRefused
 import smtplib
+from datetime import date
+
+import yagmail
+from dotenv import load_dotenv
+
 from utils import get_epub_file, move_file
 
 
@@ -12,6 +13,7 @@ load_dotenv()
 SENDER = os.getenv("gmail_username")
 PASSWORD = os.getenv("gmail_password")
 RECEIVER = os.getenv("email_receiver")
+TODAY = date.today().strftime("%d/%m/%Y")
 
 
 def send_email(files):
@@ -21,7 +23,7 @@ def send_email(files):
         yag = yagmail.SMTP(SENDER, PASSWORD)
         yag.send(
             to=RECEIVER,
-            subject="Livresss",
+            subject=f"Livres du {TODAY}",
             contents=body,
             attachments=[file for file in files],
         )
